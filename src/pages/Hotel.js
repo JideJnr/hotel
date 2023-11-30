@@ -18,7 +18,7 @@ const Hotel = () => {
  
     const [record, setRecord] = useState([]);
     const todayDate = getCurrentDate();
-    const path = `record/${todayDate}/room`
+    const path = `hotel/${data.location}/${todayDate}/record/room`
    
 
    
@@ -41,8 +41,9 @@ const Hotel = () => {
           });
       }, [path]);
   
-      const off = true;
-
+      
+const active= false
+     
 
   return (
     <div className='bg-gray-300'>
@@ -51,8 +52,8 @@ const Hotel = () => {
         <Realtime data={record}/>
         <Record data={record}/>
         <RecentExpenses />
-        <PriceList/>
-        <Notice  off={off}/>
+        <PriceList data={data}/>
+        <Notice active={active}  />
         <Footer/>
         
     </div>

@@ -9,7 +9,7 @@ import { db } from '../firebase';
 import Badge from './Badge';
 import NewNotice from './NewNotice';
 
-const Notice = () => {
+const Notice = ({active}) => {
 
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState([]);
@@ -53,7 +53,7 @@ const Notice = () => {
 
 
   return (
-    <section class="container my-5 h-[200px] overflow-hidden w-full max-w-full flex flex-col border border-gray-200 dark:border-gray-700 md:rounded-lg bg-white">
+    <section class="container  h-[200px] overflow-hidden w-full max-w-full flex flex-col border border-gray-200 dark:border-gray-700 md:rounded-lg bg-white">
        {loading ? (
         // Render loading screen while data is being fetched
         <p>Loading...</p>
@@ -64,13 +64,15 @@ const Notice = () => {
           <header className="text-xs uppercase text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm font-semibold p-2">
             Notices
           </header>
-
-          <div className='border-white border-sm ml-auto  w-fit  h-full'>
           
-            <Modal button={customButton} modalContent={modalContent} />
-                    
+          {active &&           <div className='border-white border-sm ml-auto  w-fit  h-full '>
+          
+          <Modal button={customButton} modalContent={modalContent} />
+                  
 
-          </div>
+        </div> }
+
+
         </thead>
         <>
 

@@ -4,6 +4,8 @@ import { getCurrentDate, getYesterdayDate } from '../function/getCurrentDate';
 import { db } from '../firebase';
 import { collection, getDocs, query } from 'firebase/firestore';
 import AdminExpenses from './AdminExpenses';
+import { Disclosure } from '@headlessui/react'
+import { ChevronUpIcon } from '@heroicons/react/20/solid'
 
 
 function RecentExpenses() {
@@ -67,49 +69,68 @@ function RecentExpenses() {
       <header className="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
         <h2 className="font-semibold text-slate-800 dark:text-slate-100">Recent Expenses</h2>
       </header>
-      <div className="p-3">
-        
-        {/* "Today" group */}
-
-        <div>
-          <header className="text-xs uppercase text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm font-semibold p-2">
+      <div className="mx-auto w-full  bg-white p-2">
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-300  px-4 py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+              <header className="text-xs uppercase rounded-sm font-semibold p-2">
             Today
           </header>
 
-          <>
+                <ChevronUpIcon
+                  className={`${
+                    open ? 'rotate-180 transform' : ''
+                  } h-5 w-5 text-purple-500`}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+              <>
 
 
-          {empty ? (
-                      
-                      <p>No Expenses Today</p>
-                      
-                      ) : (<>
+{empty ? (
+            
+            <p>No Expenses Today</p>
+            
+            ) : (<>
 
 {expenses.map((expenses) => (
-                        <AdminExpenses
-                        key={expenses.uid}
-                        data={expenses}
+              <AdminExpenses
+              key={expenses.uid}
+              data={expenses}
 
-                        
-                    />
-                        ))}
- 
-                       
-                        </>
-      )}
+              
+          />
+              ))}
+
+             
+              </>
+)}
 
 
-         
-          </>
-          
-        </div>
 
-        {/* "Yesterday" group */}
-        
-        <div>
-          <header className="text-xs uppercase text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm font-semibold p-2">
+              </>
+
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure as="div" className="mt-2">
+          {({ open }) => (
+            <>
+              <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-300  px-4 py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+              <header className="text-xs uppercase font-semibold p-2">
             Yesterday
-          </header>          <>
+          </header>    
+                <ChevronUpIcon
+                  className={`${
+                    open ? 'rotate-180 transform' : ''
+                  } h-5 w-5 text-purple-500`}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+               
+            <>
 
 
 {yempty ? (
@@ -139,12 +160,12 @@ function RecentExpenses() {
 
 
 
-</>
+            </>
 
-
-
-        </div>
-
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
       </div>
     </div>
   );

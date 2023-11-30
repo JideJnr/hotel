@@ -9,11 +9,12 @@ import Badge from './Badge'
 import NewRoom from './NewRoom'
 
 
-const PriceList = ({user}) => {
+const PriceList = ({user,data}) => {
 
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
-  const path = `hotel`; // Replace with the actual path
+  const [price, setPrice] = useState([]);
+  const path = `hotels/${data.location}/price`;
+ // Replace with the actual path
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,17 +23,17 @@ const PriceList = ({user}) => {
         setLoading(true);
 
         // Fetch documents from the 'datas' collection
-        const dataRef = collection(db, path);
-        const q = query(dataRef);
+        const priceRef = collection(db, path);
+        const q = query(priceRef);
         const querySnapshot = await getDocs(q);
 
-        let data = [];
+        let price = [];
         querySnapshot.forEach((doc) => {
-          data.push(doc.data());
+          price.push(doc.data());
         });
 
         // Set data state with the fetched data
-        setData(data);
+        setPrice(price);
       } catch (error) {
         console.error('Error getting documents: ', error);
       } finally {
@@ -47,48 +48,56 @@ const PriceList = ({user}) => {
 
   
 
-  const empty = data.length === 0;
+  const empty = price.length === 0;
 
   const customButton = <Badge label='Add Room'/>;
-  const modalContent=<NewRoom/>;
+  const modalContent=<NewRoom data={data}/>;
 
 
     
   return (
     
-    <div class="container border  mx-auto w-full max-w-full h-[200px]overflow-y-auto">
-  
-                
-                    <table class="w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead class="bg-gray-50 dark:bg-gray-800 flex w-full">
-          <header className="text-xs uppercase text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm font-semibold p-2">
-            Price List
-          </header>
+    <div class="container border  mx-auto w-full max-w-full h-[200px] overflow-y-auto bg-white">
+      
+      <div>
+      <header className="text-xs uppercase text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm font-semibold p-2 flex">
+                       <p> Price List</p>
 
-          <div className='border-white border-sm ml-auto  w-fit  h-full'>
+                        <div className='border-white border-sm ml-auto  w-fit h-fit'>
           
-            <Modal button={customButton} modalContent={modalContent} />
-                    
+          <Modal button={customButton} modalContent={modalContent} />
+                  
 
-          </div>
-        </thead>
+        </div>
+      </header>
+
+      
+
+
+        </div>
+      
+      <table class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-800 flex w-full">
+
+
+                    </thead>
                     <thead class="bg-gray-50 dark:bg-gray-800">
                             <tr className='grid grid-cols-10 text-center '>
                             
-                                <th scope="col" class=" text-center col-span-4 md:col-span-3  px-4 py-3.5 text-sm font-normal text-gray-500 dark:text-gray-400">
+                                <th scope="col" class=" text-center col-span-4   px-4 py-3.5 text-sm font-normal text-gray-500 dark:text-gray-400">
                                     Room
                                 </th>
 
-                                <th scope="col" class=" hidden md:flex px-4 py-3.5 text-sm font-normal  text-gray-500 dark:text-gray-400">
-                                    Type
+                                <th scope="col" class="col-span-2   px-4 py-3.5 text-sm font-normal  text-gray-500 dark:text-gray-400">
+                                    Lodge
                                 </th>
 
-                                <th scope="col" class="col-span-3 px-4 py-3.5 text-sm font-normal text-gray-500 dark:text-gray-400">
-                                    Price
+                                <th scope="col" class="col-span-2 px-4 py-3.5 text-sm font-normal text-gray-500 dark:text-gray-400">
+                                    ShortRest
                                 </th>
 
-                                <th scope="col" class="col-span-3 px-4 py-3.5 text-sm font-normal text-gray-500 dark:text-gray-400">
-                                    Price
+                                <th scope="col" class="col-span-2 px-4 py-3.5 text-sm font-normal text-gray-500 dark:text-gray-400">
+                                    Lodge
                                 </th>
 
                                 
@@ -104,18 +113,18 @@ const PriceList = ({user}) => {
                         <tbody className="bg-white divide-y divide-gray-200  dark:divide-gray-700 dark:bg-gray-900 w-full  ">
                           
 
-                          {data.map((data) => (
+                          {price.map((price) => (
                             <Modal
-                              button={<RoomList data={data} />}
-                              modalContent={<RoomData data={data} user={user} />} // Pass the record data to the modal content
-                              key={data.uid}
+                              button={<RoomList data={price} />}
+                              modalContent={<RoomData data={price} user={user} />} // Pass the record data to the modal content
+                              key={price.uid}
                             />
                           ))}
 
                         </tbody>
                         </>
       )}
-                    </table>
+      </table>
               
             
   

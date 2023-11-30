@@ -5,8 +5,8 @@ import Icon from '../assets/icon-01.svg';
 import EditMenu from './DropdownEditMenu';
 import { tailwindConfig, hexToRGB } from '../utils/Utils';
 
-function Chart({data}) {
-
+function Chart({data,record}) {
+  console.log(data)
   const getLastNDays = (n) => {
     const today = new Date();
     const lastNDaysArray = Array.from({ length: n }, (_, index) => {
@@ -23,13 +23,14 @@ function Chart({data}) {
 
   // Get an array of the last 30 days
   const last30DaysArray = getLastNDays(30);
+  const recordArray = record.map(record => record.amount);
 
   const chartData = {
     labels: last30DaysArray, // Use the dynamically generated array
     datasets: [
       // Indigo line
       {
-        data: [732, 610, 610, 504, 504, 504, 349, 349, 504, 342, 504, 610, 391, 192, 154, 273, 191, 191, 126, 263, 349, 252, 423, 622, 470, 532],
+        data: recordArray,
         fill: true,
         backgroundColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.blue[500])}, 0.08)`,
         borderColor: tailwindConfig().theme.colors.indigo[500],
@@ -59,6 +60,9 @@ function Chart({data}) {
       },
     ],
   };
+
+  console.log(data)
+
 
   return (
 

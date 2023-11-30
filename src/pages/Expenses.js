@@ -60,7 +60,7 @@ const handleSubmit = async (e) => {
   try {
     setSloading(true);
 
-    await addDoc(collection(db, `record/${todayDate}/expenses`), {
+    await addDoc(collection(db, `/${todayDate}/expenses`), {
       amount: amount,
       reason: reason,
       authority: authority,

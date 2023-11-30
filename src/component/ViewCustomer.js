@@ -1,5 +1,5 @@
 import React from 'react'
-import Logo from '../assets/logo.jpg'
+import Logo from '../assets/logo.png'
 import { useState } from 'react';
 import LodgeList from './LodgeList';
 import { collection, getDocs, query } from 'firebase/firestore';

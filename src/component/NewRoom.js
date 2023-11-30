@@ -1,11 +1,11 @@
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
 import { db } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentDate } from '../function/getCurrentDate';
 import Button from './Button';
 
-const NewNotice = ({onClick}) => {
+const NewNotice = ({onClick,data}) => {
 
   const [notice, setNotice] = useState('');
   const [note, setNote] = useState('');
@@ -23,43 +23,42 @@ const NewNotice = ({onClick}) => {
      
 
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  // Check if the form is already being submitted
-  if (loading) {
-    return;
-  }
-
-  setLoading(true); // Set loading to true when the form starts submitting
-
-  if (notice === '' || note === '') {
-    setError('Input All Fields!!!');
-    setLoading(false); // Set loading to false if there is an error
-    return;
-  }
-
-  try {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
   
-    await addDoc(collection(db, `hotel/${roomNumber}/notice`), {
-      notice: notice,
-      note: note,
-    });
-
-
-
-    
-    window.location.reload();
-
-    
-  } catch (err) {
-    console.error('Error submitting data: ', err);
-    setError('Error submitting data. Please try again.');
-  } finally {
-    
-    setLoading(false); 
-    navigate('/');}
-};
+    // Check if the form is already being submitted
+    if (loading) {
+      return;
+    }
+  
+    setLoading(true); // Set loading to true when the form starts submitting
+  
+    if (roomNumber === '' || lodge === '' || shortRest === '' || halfDay === '') {
+      setError('Input All Fields!!!');
+      setLoading(false); // Set loading to false if there is an error
+      return;
+    }
+  
+    try {
+      const docRef = doc(collection(db, `hotels/${data.location}/price`), roomNumber);
+  
+      await setDoc(docRef, {
+        roomNumber: roomNumber,
+        lodge: lodge,
+        shortRest: shortRest,
+        halfDay: halfDay,
+        inUse: false,
+      });
+  
+      navigate('/');
+    } catch (err) {
+      console.error('Error submitting data: ', err);
+      setError('Error submitting data. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
   return (
     <div class="container max-w-screen-lg mx-auto">
@@ -78,43 +77,43 @@ const handleSubmit = async (e) => {
                   <input
                   aria-label='Enter The Room Number'
                   type='number'
-                  placeholder='Notice'
+                  placeholder='Enter The Room Number'
                   className='text-sm text-black w-full mr-3 py-5 px-4 h-2 border  rounded mb-2'
-                  onChange={({ target }) => setNote(target.value)}/>
-
-                </div>
-
-                <div class="md:col-span-5">
-                  <label for="notice">Short-Rest</label>
-                  <input
-                  aria-label='Enter The Notice'
-                  type='number'
-                  placeholder='Notice'
-                  className='text-sm text-black w-full mr-3 py-5 px-4 h-2 border  rounded mb-2'
-                  onChange={({ target }) => setNotice(target.value)}/>
+                  onChange={({ target }) => setRoomNumber(target.value)}/>
 
                 </div>
 
                 <div class="md:col-span-5">
                   <label for="notice">Lodge</label>
                   <input
-                  aria-label='Enter The Notice'
+                  aria-label='Enter The Price'
                   type='number'
-                  placeholder='Notice'
+                  placeholder='Lodge'
                   className='text-sm text-black w-full mr-3 py-5 px-4 h-2 border  rounded mb-2'
-                  onChange={({ target }) => setNotice(target.value)}/>
+                  onChange={({ target }) => setLodge(target.value)}/>
+
+                </div>
+
+                <div class="md:col-span-5">
+                  <label for="notice">shortRest</label>
+                  <input
+                  aria-label='Enter The Price'
+                  type='number'
+                  placeholder='shortRest'
+                  className='text-sm text-black w-full mr-3 py-5 px-4 h-2 border  rounded mb-2'
+                  onChange={({ target }) => setShortRest(target.value)}/>
 
                 </div>
 
                 
                 <div class="md:col-span-5">
-                  <label for="notice">HalfDay</label>
+                  <label for="HalfDay">HalfDay</label>
                   <input
-                  aria-label='Enter The Notice'
+                  aria-label='Enter The Price'
                   type='number'
-                  placeholder='Notice'
+                  placeholder='HalfDay'
                   className='text-sm text-black w-full mr-3 py-5 px-4 h-2 border  rounded mb-2'
-                  onChange={({ target }) => setNotice(target.value)}/>
+                  onChange={({ target }) => setHalfDay(target.value)}/>
 
                 </div>
 

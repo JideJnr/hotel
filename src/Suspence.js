@@ -1,10 +1,10 @@
 import React from 'react'
-import Logo  from './assets/logo.jpg'
+import Logo  from './assets/logo.png'
 import CircularProgress from '@mui/material/CircularProgress';
 
 function Suspence() {
   return (
-  <div className='flex w-screen h-screen bg-[#f6f6f6] '>
+  <div className='flex w-screen h-screen bg-[#511e54] '>
         
     <div className='flex-col mx-auto my-auto '>
 

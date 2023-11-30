@@ -21,9 +21,9 @@ const Staff = ({ user }) => {
   const [room, setRoom] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const todayDate = getCurrentDate();
-  const recordPath = `record/${todayDate}/room`;
-  const expensesPath = `record/${todayDate}/expenses`;
-  const roomPath = `hotels/Ijebu/Room`;
+  const recordPath = `hotels/${user.state}/${todayDate}/room`;
+  const expensesPath = `hotels/${user.state}/${todayDate}/expense`;
+  const roomPath = `hotels/${user.state}/price`;
   const [result, setResult] = useState(0);
 
   useEffect(() => {
@@ -61,6 +61,7 @@ const Staff = ({ user }) => {
         setRoom(roomData);
         setRecord(recordData);
         setExpenses(expensesData);
+
       } catch (error) {
         console.error('Error getting documents: ', error);
       } finally {
@@ -73,11 +74,11 @@ const Staff = ({ user }) => {
 
   const totalSales = record.reduce((total, recordItem) => total + recordItem.amount, 0);
   const totalExpenses = expenses.reduce((total, expensesItem) => total + expensesItem.amount, 0);
+
   const availableCash = () => {setResult(totalSales - totalExpenses);
   };
 
-  const availableRoom = () => {setResult(totalSales - totalExpenses);
-  };
+
 
   console.log(room)
 
@@ -100,7 +101,7 @@ const Staff = ({ user }) => {
       <main className='h-full overflow-y-auto'>
       <WelcomeBanner user={user}/>
         <div className="mx-auto max-w-4xl py-6 sm:px-6 lg:px-8 grid grid-cols-1 gap-2">
-          <StaffDashboard user={user} totalSales={totalSales} totalExpenses={totalExpenses} result={result} room={room} />
+          <StaffDashboard user={user} available={availableCash} room={room} />
 
           <div className="grid grid-cols-2 gap-2 ">
             

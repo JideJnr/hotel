@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
-import Logo from '../assets/logo.jpg'
+import Logo from '../assets/logo.png'
 import { addDoc, collection } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../firebase';

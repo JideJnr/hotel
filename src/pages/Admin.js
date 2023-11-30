@@ -80,6 +80,7 @@ const Admin = ({ user }) => {
     fetchData();
   }, [cpath]); // Include path as a dependency
 
+ 
 
   return (
     <div className="w-screen h-screen ">
@@ -95,7 +96,7 @@ const Admin = ({ user }) => {
             <div className="mx-auto max-w-4xl  sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {hotel.map((hotel) => (
-                  <Chart key={hotel.uid} data={hotel} />
+                  <Chart key={hotel.uid} data={hotel} record={client}/>
                 ))}
               </div>
 

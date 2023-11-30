@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Logo from '../assets/logo.jpg'
+import Logo from '../assets/logo.png'
 import Navbar from './Navbar' 
 import ConversationList from './ConversationList'
 import Modal from './Modal';

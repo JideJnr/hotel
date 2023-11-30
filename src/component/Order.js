@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ReusableListbox from '../component/ListBox';
+import Listbox from '../component/ListBox';
 import { getCurrentDate ,getYearMonth} from '../function/getCurrentDate';
 import {
   addDoc,
@@ -56,7 +56,6 @@ function CheckIcon(props) {
 
 const Order = ({ record, user,rooms }) => {
   const totalSales = record.reduce((total, recordItem) => total + recordItem.amount, 0);
-  
   const notUse = rooms.map(item => !item.Inuse) ;
 
   const [amount, setAmount] = useState(0);
@@ -64,12 +63,12 @@ const Order = ({ record, user,rooms }) => {
   const [selectedRoom, setSelectedRoom] = useState(notUse[0]);
   const [selectedType, setSelectedType] = useState(type[0]);
   const [error, setError] = useState('');
-  const [selected, setSelected] = useState(client[0]);
+  const [selected, setSelected] = useState(client[1]);
   const [loading, setLoading] = useState(false); // Added loading state
   const navigate = useNavigate();
   const todayDate = getCurrentDate();
   const month = getYearMonth();
-
+  const path = `hotel/${user.state}/${todayDate}/room`
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -104,55 +103,56 @@ const Order = ({ record, user,rooms }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!selectedType) {
       setError('Please select a type!');
       return;
     }
-
+  
     if (!selectedRoom) {
       setError('Please select a room!');
       return;
     }
-
+  
     try {
-      setLoading(true); // Set loading to true before making the asynchronous call
-
-      const docRef = await addDoc(collection(db, `hotel/${todayDate}/room`), {
+      setLoading(true);
+  
+      const currentTime = new Date(); // Get the current date and time
+  
+      const docRef = await addDoc(collection(db, path), {
         name: selected.name,
-        room: selectedRoom.name,
+        room: selectedRoom.roomNumber,
         order: selectedType.name,
         type: 'Deluxe Room',
         inUse: true,
         amount: amount,
         host: user.name,
-        timeIn: 'now',
+        
       });
-
+  
       await addDoc(collection(db, month), {
         name: selected.name,
-        room: selectedRoom.name,
+        room: selectedRoom.roomNumber,
         order: selectedType.name,
         type: 'Deluxe Room',
         amount: amount,
         host: user.name,
-        timeIn: 'now',
+        
       });
-
-      await updateDoc(collection(db, `hotel/${user.hotel}/rooms`, 'docRef'), {
-        inUse : true,
+  
+      await updateDoc(collection(db, path , docRef.id), {
+        inUse: true,
       });
-
-
+  
       const newDocId = docRef.id;
-
+  
       await updateDoc(docRef, { id: newDocId });
-
+  
       const updatedNumber = totalSales + amount;
-
+  
       const totalSalesDocRef = doc(db, `hotel/${user.office}`);
       const totalSalesDocSnapshot = await getDoc(totalSalesDocRef);
-
+  
       if (totalSalesDocSnapshot.exists()) {
         await updateDoc(totalSalesDocRef, {
           totalSales: updatedNumber,
@@ -162,15 +162,18 @@ const Order = ({ record, user,rooms }) => {
           totalSales: updatedNumber,
         });
       }
-
+  
       navigate('/');
     } catch (err) {
       console.error('Error submitting data: ', err);
     } finally {
-      setLoading(false); // Set loading to false after the call is completed
+      setLoading(false);
     }
   };
 
+
+
+ 
   return (
     <>
     
@@ -194,7 +197,7 @@ const Order = ({ record, user,rooms }) => {
 
                 <div class="md:col-span-5">
                   
-                  <ReusableListbox items={rooms} selectedItem={selectedRoom} label="Room Number" onChange={handleRoomChange} />
+                  <Listbox items={rooms} selectedItem={selectedRoom} label="Room Number" onChange={handleRoomChange} />
                 </div>
 
                 <div className="w-full px-4 py-16 md:col-span-5">

@@ -3,6 +3,7 @@ import Admin from './Admin';
 import Staff from './Staff';
 import { auth, db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import Suspence from '../Suspence';
 
 const Home = () => {
   const uid = auth.currentUser.uid;
@@ -31,12 +32,12 @@ const Home = () => {
     fetchData();
   }, [path]);
   
-console.log(data)
+
   return (
     <div>
     
       {loading ? (
-        <p>Loading...</p>
+        <Suspence/>
       ) : (
         // Wrap the content inside parentheses
         (data && data.admin ? (

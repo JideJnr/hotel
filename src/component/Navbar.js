@@ -4,7 +4,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
-import Logo from '../assets/logo.jpg'
+import Logo from '../assets/logo.png'
 import React, { useEffect, useState } from 'react';
 import NewExpensesComponent from '../pages/Expenses'; // Rename the import
 
